@@ -86,7 +86,7 @@ export default function Dashboard() {
       fetch(`${BACKEND_URL}/api/student/${selectedStudent.id}/history`)
         .then(res => res.json())
         .then(data => {
-          const chartData = data.map(d => ({
+          const chartData = data.map((d: any) => ({
             time: new Date(d.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }),
             frictionScore: d.friction_score
           }));
