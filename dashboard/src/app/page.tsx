@@ -7,10 +7,23 @@ import { Users, Activity, AlertTriangle, CheckCircle, Clock } from 'lucide-react
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000";
 const WS_URL = process.env.NEXT_PUBLIC_WS_URL || "ws://localhost:8000/ws/classroom/main";
 
+interface Student {
+  id: string | number;
+  name: string;
+  status: string;
+  lastIntervention: string;
+  currentFriction?: number;
+}
+
+interface HistoryPoint {
+  time: string;
+  frictionScore: number;
+}
+
 export default function Dashboard() {
-  const [students, setStudents] = useState([]);
-  const [selectedStudent, setSelectedStudent] = useState(null);
-  const [historyData, setHistoryData] = useState([]);
+  const [students, setStudents] = useState<Student[]>([]);
+  const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
+  const [historyData, setHistoryData] = useState<HistoryPoint[]>([]);
   const [wsStatus, setWsStatus] = useState("Connecting...");
 
   // Temporary hardcoded students list for demo purposes if DB is empty
