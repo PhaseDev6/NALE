@@ -1,4 +1,4 @@
-// NALE Intervention Engine (v2)
+
 
 let activeIntervention = null;
 let injectedStyleEl = null;
@@ -19,7 +19,7 @@ const INTERVENTIONS = {
 function revertAll() {
   injectedStyleEl?.remove();
   rulerEl?.remove();
-  document.querySelector('.nale-break-card')?.remove();
+  document.querySelector('.NeuroLens-break-card')?.remove();
   
   injectedStyleEl = null;
   rulerEl = null;
@@ -28,7 +28,7 @@ function revertAll() {
 
 chrome.runtime.onMessage.addListener((msg) => {
   if (msg.type === "APPLY_INTERVENTION" && msg.intervention !== activeIntervention) {
-    console.log("NALE: Applying intervention ->", msg.intervention);
+    console.log("NeuroLens: Applying intervention ->", msg.intervention);
     revertAll();
     if (INTERVENTIONS[msg.intervention]) {
       INTERVENTIONS[msg.intervention]();
@@ -36,21 +36,21 @@ chrome.runtime.onMessage.addListener((msg) => {
     }
   }
   if (msg.type === "REVERT_INTERVENTION") {
-    console.log("NALE: Reverting interventions");
+    console.log("NeuroLens: Reverting interventions");
     revertAll();
   }
 });
 
 function applyStyle(cssText) {
   injectedStyleEl = document.createElement("style");
-  injectedStyleEl.id = "nale-dynamic-styles";
+  injectedStyleEl.id = "NeuroLens-dynamic-styles";
   injectedStyleEl.textContent = cssText;
   document.head.appendChild(injectedStyleEl);
 }
 
 function activateReadingRuler() {
   rulerEl = document.createElement('div');
-  rulerEl.className = 'nale-reading-ruler';
+  rulerEl.className = 'NeuroLens-reading-ruler';
   rulerEl.style.cssText = `
     position: fixed; left: 0; right: 0; height: 100px;
     pointer-events: none; z-index: 999999;
@@ -65,7 +65,7 @@ function activateReadingRuler() {
 
 function showBreakCard() {
   const card = document.createElement('div');
-  card.className = 'nale-break-card';
+  card.className = 'NeuroLens-break-card';
   card.style.cssText = `
     position: fixed; top: 20px; right: 20px; z-index: 999999;
     background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.2);
@@ -77,3 +77,4 @@ function showBreakCard() {
   `;
   document.body.appendChild(card);
 }
+

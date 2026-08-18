@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "NALE: Neuro-Adaptive Learning Ecosystem",
+  "name": "NeuroLens: Neuro-Adaptive Learning Ecosystem",
   "version": "2.0",
   "description": "Ambient intelligence platform that monitors biometric telemetry and dynamically alters web UIs.",
   "permissions": [
@@ -33,3 +33,4 @@
     }
   ]
 }
+

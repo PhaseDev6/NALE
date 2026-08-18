@@ -49,3 +49,4 @@ class InterventionLog(Base):
     outcome_score = Column(Float, nullable=True)
     duration_ms = Column(Integer, nullable=True)
     timestamp = Column(Integer)
+

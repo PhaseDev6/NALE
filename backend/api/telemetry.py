@@ -12,19 +12,18 @@ router = APIRouter(prefix="/api/telemetry", tags=["telemetry"])
 
 @router.post("")
 async def ingest_telemetry(payload: TelemetryPayload, student=Depends(get_current_student), db: Session = Depends(get_db)):
-    # Persist raw event
+
     event = TelemetryEvent(**payload.dict(), student_id=student.id)
     db.add(event)
-    
-    # Get or train ML model
+
     model = get_or_train_model(student.id, db)
     
     is_anomalous = False
     if model:
-        # returns 1 for inliers, -1 for outliers
+
         is_anomalous = model.predict([payload.feature_vector])[0] == -1
     else:
-        # Fallback heuristic if not enough data
+
         is_anomalous = payload.friction_score > 0.7 or payload.gaze_score > 0.7
 
     intervention = None
@@ -40,7 +39,6 @@ async def ingest_telemetry(payload: TelemetryPayload, student=Depends(get_curren
         
     db.commit()
 
-    # Broadcast to websocket
     await ws_manager.broadcast(student.classroom_id, {
         "student_id": student.id,
         "student_name": student.name,
@@ -50,4 +48,5 @@ async def ingest_telemetry(payload: TelemetryPayload, student=Depends(get_curren
     })
 
     return {"anomalous": bool(is_anomalous), "intervention": intervention}
+
 

@@ -6,7 +6,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   const loginError = document.getElementById('loginError');
   const studentNameDisplay = document.getElementById('studentNameDisplay');
 
-  // Check auth state
   const { token, studentName } = await chrome.storage.local.get(['token', 'studentName']);
   
   if (token) {
@@ -15,7 +14,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     loginScreen.classList.remove('hidden');
   }
 
-  // Handle Login
   document.getElementById('loginBtn').addEventListener('click', async () => {
     const schoolCode = document.getElementById('schoolCode').value.trim();
     const studentId = document.getElementById('studentId').value.trim();
@@ -55,7 +53,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         disorderProfile: data.student.disorder_profile
       });
 
-      // Notify background script to restart telemetry
       chrome.runtime.sendMessage({ type: "AUTH_SUCCESS" });
       showMainScreen(data.student.name);
       
@@ -66,14 +63,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   });
 
-  // Handle Logout
   document.getElementById('logoutBtn').addEventListener('click', async () => {
     await chrome.storage.local.clear();
     mainScreen.classList.add('hidden');
     loginScreen.classList.remove('hidden');
   });
 
-  // Camera request
   document.getElementById('requestCamera').addEventListener('click', () => {
     chrome.tabs.create({ url: chrome.runtime.getURL("permissions.html") });
   });
@@ -89,3 +84,4 @@ document.addEventListener('DOMContentLoaded', async () => {
     loginError.classList.remove('hidden');
   }
 });
+

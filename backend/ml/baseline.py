@@ -14,8 +14,7 @@ def get_or_train_model(student_id: int, db):
     if os.path.exists(model_path):
         with open(model_path, "rb") as f:
             return pickle.load(f)
-            
-    # Train if we have enough data
+
     events = db.query(TelemetryEvent).filter(TelemetryEvent.student_id == student_id).limit(200).all()
     if len(events) < 20: # Use low threshold for demo
         return None
@@ -29,3 +28,4 @@ def get_or_train_model(student_id: int, db):
         pickle.dump(model, f)
         
     return model
+

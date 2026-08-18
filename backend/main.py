@@ -8,10 +8,8 @@ from api.students import router as students_router
 from models import School
 import uvicorn
 
-# Create tables
 Base.metadata.create_all(bind=engine)
 
-# Auto-seed Demo school for Hackathon if db is empty
 db = SessionLocal()
 if not db.query(School).first():
     demo_school = School(name='Demo High School', school_code='BPS-1234')
@@ -19,7 +17,7 @@ if not db.query(School).first():
     db.commit()
 db.close()
 
-app = FastAPI(title="NALE Backend API v2")
+app = FastAPI(title="NeuroLens Backend API v2")
 
 app.add_middleware(
     CORSMiddleware,
@@ -36,7 +34,8 @@ app.include_router(students_router)
 
 @app.get("/")
 def read_root():
-    return {"status": "NALE Backend v2 is running"}
+    return {"status": "NeuroLens Backend v2 is running"}
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
+

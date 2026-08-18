@@ -52,3 +52,4 @@ class TelemetryPayload(BaseModel):
     @property
     def feature_vector(self):
         return [self.friction_score, self.gaze_score, self.scroll_erratic, self.keystrokes]
+

@@ -55,3 +55,4 @@ def get_current_student(payload: dict = Depends(get_current_user_token), db: Ses
     if student is None:
         raise HTTPException(status_code=404, detail="Student not found")
     return student
+

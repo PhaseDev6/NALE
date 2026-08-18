@@ -16,7 +16,7 @@ def generate_school_code():
 @router.post("/school/register", response_model=SchoolResponse)
 def register_school(school_in: SchoolCreate, db: Session = Depends(get_db)):
     code = generate_school_code()
-    # Ensure unique
+
     while db.query(School).filter(School.school_code == code).first():
         code = generate_school_code()
         
@@ -38,7 +38,7 @@ def login_student(login_data: StudentLogin, db: Session = Depends(get_db)):
     ).first()
     
     if not student:
-        # Auto-create for demo purposes if it doesn't exist
+
         student = Student(
             school_id=school.id,
             student_id_str=login_data.student_id_str,
@@ -51,16 +51,14 @@ def login_student(login_data: StudentLogin, db: Session = Depends(get_db)):
         db.commit()
         db.refresh(student)
     else:
-        # Verify PIN
+
         if not verify_password(login_data.pin, student.pin_hash):
             raise HTTPException(status_code=401, detail="Invalid PIN")
-            
-        # Update disorder profile if provided (e.g. self-selected on first real login)
+
         if login_data.disorder_profile and student.disorder_profile != login_data.disorder_profile:
             student.disorder_profile = login_data.disorder_profile
             db.commit()
 
-    # Create JWT
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
         data={"sub": student.id, "role": "student", "name": student.name}, expires_delta=access_token_expires
@@ -75,4 +73,5 @@ def login_student(login_data: StudentLogin, db: Session = Depends(get_db)):
             "disorder_profile": student.disorder_profile
         }
     }
+
 

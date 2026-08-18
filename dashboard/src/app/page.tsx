@@ -26,11 +26,10 @@ export default function Dashboard() {
   const [historyData, setHistoryData] = useState<HistoryPoint[]>([]);
   const [wsStatus, setWsStatus] = useState("Connecting...");
 
-  // Temporary hardcoded students list for demo purposes if DB is empty
-  // In a real app, this would be fetched via an API
+
   useEffect(() => {
-    // We will build up the students list as telemetry comes in via WS
-    // or fetch from an endpoint. For now, rely on WS messages.
+
+
   }, []);
 
   useEffect(() => {
@@ -42,7 +41,7 @@ export default function Dashboard() {
 
     ws.onmessage = (event) => {
       const data = JSON.parse(event.data);
-      // data: { student_id, student_name, friction_score, is_anomalous, intervention }
+
       
       setStudents(prev => {
         const existing = prev.find(s => s.id === data.student_id);
@@ -64,7 +63,6 @@ export default function Dashboard() {
         }
       });
 
-      // Update selected student history if it matches
       if (selectedStudent && selectedStudent.id === data.student_id) {
         setHistoryData(prev => {
           const newData = [...prev, {
@@ -80,7 +78,6 @@ export default function Dashboard() {
     return () => ws.close();
   }, [selectedStudent]);
 
-  // When selected student changes, fetch history
   useEffect(() => {
     if (selectedStudent) {
       fetch(`${BACKEND_URL}/api/student/${selectedStudent.id}/history`)
@@ -99,10 +96,10 @@ export default function Dashboard() {
   return (
     <div className="flex h-screen bg-slate-50 text-slate-900">
       
-      {/* Sidebar Roster */}
+      
       <div className="w-64 bg-white border-r border-slate-200 p-4 flex flex-col">
         <h1 className="text-xl font-bold mb-2 text-indigo-600 flex items-center gap-2">
-          <Activity size={24} /> NALE Portal
+          <img src="/logo.png" alt="NeuroLens Logo" className="w-8 h-8" /> NeuroLens Portal
         </h1>
         <div className={`text-xs mb-6 px-2 py-1 rounded w-fit ${wsStatus === 'Live' ? 'bg-emerald-100 text-emerald-700' : 'bg-red-100 text-red-700'}`}>
           WS: {wsStatus}
@@ -129,7 +126,7 @@ export default function Dashboard() {
         )}
       </div>
 
-      {/* Main Content Area */}
+      
       <div className="flex-1 p-8 overflow-y-auto">
         {!selectedStudent ? (
           <div className="h-full flex items-center justify-center text-slate-400">
@@ -165,7 +162,7 @@ export default function Dashboard() {
               </div>
             </header>
 
-            {/* Chart Section */}
+            
             <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm mb-8">
               <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
                 <Activity size={20} className="text-indigo-500"/> Cognitive Friction Timeline
@@ -194,7 +191,7 @@ export default function Dashboard() {
               </div>
             </div>
             
-            {/* Actionable Insights */}
+            
             <div className={`p-6 rounded-xl border ${selectedStudent.status === 'High Friction' ? 'bg-amber-50 border-amber-200' : 'bg-indigo-50 border-indigo-100'}`}>
               <h3 className={`text-lg font-bold mb-2 ${selectedStudent.status === 'High Friction' ? 'text-amber-900' : 'text-indigo-900'}`}>
                 Automated Pedagogical Insight
@@ -211,3 +208,5 @@ export default function Dashboard() {
     </div>
   );
 }
+
+

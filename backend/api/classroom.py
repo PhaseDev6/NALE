@@ -5,7 +5,7 @@ router = APIRouter(prefix="/ws/classroom", tags=["classroom"])
 
 class ConnectionManager:
     def __init__(self):
-        # Maps classroom_id to a list of websockets
+
         self.active_connections: Dict[str, List[WebSocket]] = {}
 
     async def connect(self, websocket: WebSocket, classroom_id: str):
@@ -39,7 +39,8 @@ async def websocket_endpoint(websocket: WebSocket, classroom_id: str):
     await ws_manager.connect(websocket, classroom_id)
     try:
         while True:
-            # Just keep connection open
+
             await websocket.receive_text()
     except WebSocketDisconnect:
         ws_manager.disconnect(websocket, classroom_id)
+

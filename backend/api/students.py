@@ -16,10 +16,11 @@ def get_student_profile(student_id: int, db: Session = Depends(get_db)):
 @router.get("/{student_id}/history")
 def get_student_history(student_id: int, limit: int = 50, db: Session = Depends(get_db)):
     events = db.query(TelemetryEvent).filter(TelemetryEvent.student_id == student_id).order_by(TelemetryEvent.timestamp.desc()).limit(limit).all()
-    # Reverse to chronological order for charts
+
     return [e.__dict__ for e in reversed(events)]
 
 @router.get("/{student_id}/interventions")
 def get_student_interventions(student_id: int, limit: int = 10, db: Session = Depends(get_db)):
     logs = db.query(InterventionLog).filter(InterventionLog.student_id == student_id).order_by(InterventionLog.timestamp.desc()).limit(limit).all()
     return [log.__dict__ for log in logs]
+

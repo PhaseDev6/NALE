@@ -7,7 +7,6 @@ let blinks = 0;
 let lastHeadPose = { pitch: 0, yaw: 0, roll: 0 };
 let headMovements = 0;
 
-// Initialize Face Mesh
 const faceMesh = new FaceMesh({
   locateFile: (file) => `node_modules/@mediapipe/face_mesh/${file}`
 });
@@ -27,12 +26,10 @@ function onResults(results) {
   }
   
   const landmarks = results.multiFaceLandmarks[0];
-  
-  // Left eye pupil (468)
+
   const leftPupil = landmarks[468]; 
-  
-  // Blink detection (Eye Aspect Ratio logic approximation)
-  // Left eye top (159), bottom (145), inner (133), outer (33)
+
+
   const p_top = landmarks[159];
   const p_bot = landmarks[145];
   const p_in = landmarks[133];
@@ -46,7 +43,6 @@ function onResults(results) {
     blinks++;
   }
 
-  // Gaze tracking
   if (leftPupil) {
     const dx = leftPupil.x - lastPupilPos.x;
     const dy = leftPupil.y - lastPupilPos.y;
@@ -57,8 +53,7 @@ function onResults(results) {
     }
     lastPupilPos = { x: leftPupil.x, y: leftPupil.y };
   }
-  
-  // Head pose approx (nose tip 1, chin 152, left eye outer 33, right eye outer 263)
+
   const nose = landmarks[1];
   const headDist = Math.hypot(nose.x - lastHeadPose.yaw, nose.y - lastHeadPose.pitch);
   if (headDist > 0.05) {
@@ -102,7 +97,6 @@ function stopCamera() {
   isTracking = false;
 }
 
-// Listen for commands
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.target !== 'offscreen') return;
 
@@ -116,10 +110,9 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   }
 });
 
-// Telemetry Reporting Loop
 setInterval(() => {
   if (isTracking) {
-    // Normalize logic
+
     const gazeScore = Math.min(erraticGazeCount / 20, 1.0);
     const blinkRate = Math.min(blinks / 10, 1.0);
     const headScore = Math.min(headMovements / 10, 1.0);
@@ -133,10 +126,10 @@ setInterval(() => {
         timestamp: Date.now()
       }
     });
-    
-    // Reset for next window
+
     erraticGazeCount = 0;
     blinks = 0;
     headMovements = 0;
   }
 }, 5000);
+

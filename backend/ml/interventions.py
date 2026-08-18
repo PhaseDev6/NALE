@@ -14,3 +14,4 @@ def select_intervention(disorder_profile: str, friction_score: float) -> str:
     if friction_score > 0.6:
         return tiers[1]
     return tiers[0]
+

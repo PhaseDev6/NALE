@@ -1,4 +1,4 @@
-// NALE Background Service Worker (v2)
+
 
 let offscreenDocumentReady = false;
 let currentGazeFriction = 0;
@@ -21,10 +21,9 @@ async function setupOffscreenDocument() {
 }
 
 chrome.runtime.onInstalled.addListener(async () => {
-  console.log("NALE Extension Installed.");
+  console.log("NeuroLens Extension Installed.");
 });
 
-// Start offscreen doc only when auth is successful
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.type === "AUTH_SUCCESS") {
     setupOffscreenDocument().then(() => {
@@ -49,11 +48,10 @@ async function handleTelemetry(contentPayload, tabId) {
   const { token } = await chrome.storage.local.get('token');
   
   if (!token) {
-    console.log("NALE: Not logged in, skipping telemetry");
+    console.log("NeuroLens: Not logged in, skipping telemetry");
     return; // Don't send if not logged in
   }
 
-  // Build the unified payload for v2
   const payload = {
     url: contentPayload.url,
     friction_score: contentPayload.frictionScore, // from scroll/typing
@@ -74,17 +72,16 @@ async function handleTelemetry(contentPayload, tabId) {
     });
 
     if (res.status === 401) {
-      console.warn("NALE: Token expired or invalid. Clearing.");
+      console.warn("NeuroLens: Token expired or invalid. Clearing.");
       await chrome.storage.local.remove(['token', 'studentId', 'studentName']);
-      // Stop offscreen telemetry
+
       chrome.runtime.sendMessage({ target: 'offscreen', type: 'STOP_TELEMETRY' });
       return;
     }
 
     if (res.ok) {
       const data = await res.json();
-      
-      // Backend now decides the intervention!
+
       if (tabId && data.intervention) {
         chrome.tabs.sendMessage(tabId, {
           type: "APPLY_INTERVENTION",
@@ -97,6 +94,7 @@ async function handleTelemetry(contentPayload, tabId) {
       }
     }
   } catch (err) {
-    console.error("NALE Backend fetch error:", err);
+    console.error("NeuroLens Backend fetch error:", err);
   }
 }
+
