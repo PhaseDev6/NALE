@@ -1,10 +1,10 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from .database import engine, Base
-from .auth import router as auth_router
-from .api.telemetry import router as telemetry_router
-from .api.classroom import router as classroom_router
-from .api.students import router as students_router
+from database import engine, Base
+from auth import router as auth_router
+from api.telemetry import router as telemetry_router
+from api.classroom import router as classroom_router
+from api.students import router as students_router
 import uvicorn
 
 # Create tables

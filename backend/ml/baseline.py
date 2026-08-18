@@ -1,7 +1,7 @@
 from sklearn.ensemble import IsolationForest
 import pickle
 import os
-from ..models import TelemetryEvent
+from models import TelemetryEvent
 
 MODEL_DIR = "ml_models"
 

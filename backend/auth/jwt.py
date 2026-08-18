@@ -5,8 +5,8 @@ from passlib.context import CryptContext
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session
-from ..database import get_db
-from ..models import Student, Teacher
+from database import get_db
+from models import Student, Teacher
 
 SECRET_KEY = "supersecretkey_for_hackathon" # In prod, use env var
 ALGORITHM = "HS256"

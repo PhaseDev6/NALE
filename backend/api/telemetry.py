@@ -1,12 +1,12 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from ..database import get_db
-from ..models import TelemetryEvent, InterventionLog
-from ..schemas import TelemetryPayload
-from ..auth.jwt import get_current_student
-from ..ml.baseline import get_or_train_model
-from ..ml.interventions import select_intervention
-from .classroom import ws_manager
+from database import get_db
+from models import TelemetryEvent, InterventionLog
+from schemas import TelemetryPayload
+from auth.jwt import get_current_student
+from ml.baseline import get_or_train_model
+from ml.interventions import select_intervention
+from api.classroom import ws_manager
 
 router = APIRouter(prefix="/api/telemetry", tags=["telemetry"])
 
@@ -50,3 +50,4 @@ async def ingest_telemetry(payload: TelemetryPayload, student=Depends(get_curren
     })
 
     return {"anomalous": bool(is_anomalous), "intervention": intervention}
+

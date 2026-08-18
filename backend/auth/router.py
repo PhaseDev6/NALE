@@ -1,9 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
-from ..database import get_db
-from ..models import School, Student, Teacher
-from ..schemas import SchoolCreate, SchoolResponse, StudentLogin, StudentCreate, StudentResponse
-from .jwt import get_password_hash, verify_password, create_access_token, ACCESS_TOKEN_EXPIRE_MINUTES
+from database import get_db
+from models import School, Student, Teacher
+from schemas import SchoolCreate, SchoolResponse, StudentLogin, StudentCreate, StudentResponse
+from auth.jwt import get_password_hash, verify_password, create_access_token, ACCESS_TOKEN_EXPIRE_MINUTES
 import random
 import string
 from datetime import timedelta
@@ -75,3 +75,4 @@ def login_student(login_data: StudentLogin, db: Session = Depends(get_db)):
             "disorder_profile": student.disorder_profile
         }
     }
+
