@@ -1,14 +1,23 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from database import engine, Base
+from database import engine, Base, SessionLocal
 from auth.router import router as auth_router
 from api.telemetry import router as telemetry_router
 from api.classroom import router as classroom_router
 from api.students import router as students_router
+from models import School
 import uvicorn
 
 # Create tables
 Base.metadata.create_all(bind=engine)
+
+# Auto-seed Demo school for Hackathon if db is empty
+db = SessionLocal()
+if not db.query(School).first():
+    demo_school = School(name='Demo High School', school_code='BPS-1234')
+    db.add(demo_school)
+    db.commit()
+db.close()
 
 app = FastAPI(title="NALE Backend API v2")
 
