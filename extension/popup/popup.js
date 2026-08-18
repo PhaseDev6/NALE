@@ -1,4 +1,4 @@
-const BACKEND_URL = "http://localhost:8000";
+const BACKEND_URL = "https://nale-backend.onrender.com";
 
 document.addEventListener('DOMContentLoaded', async () => {
   const loginScreen = document.getElementById('loginScreen');

@@ -62,7 +62,7 @@ async function handleTelemetry(contentPayload, tabId) {
   };
 
   try {
-    const res = await fetch('http://localhost:8000/api/telemetry', {
+    const res = await fetch('https://nale-backend.onrender.com/api/telemetry', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
