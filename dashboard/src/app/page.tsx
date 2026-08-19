@@ -94,113 +94,122 @@ export default function Dashboard() {
   }, [selectedStudent]);
 
   return (
-    <div className="flex h-screen bg-slate-50 text-slate-900">
+    <div className="flex h-screen bg-[#F9F8F6] text-[#4A4A4A] font-sans selection:bg-[#E2E8F0]">
       
-      
-      <div className="w-64 bg-white border-r border-slate-200 p-4 flex flex-col">
-        <h1 className="text-xl font-bold mb-2 text-indigo-600 flex items-center gap-2">
-          <img src="/logo.png" alt="NeuroLens Logo" className="w-8 h-8" /> NeuroLens Portal
+      {/* Sidebar Roster */}
+      <div className="w-72 bg-[#F3F1EC] border-r border-[#E8E4DB] p-6 flex flex-col shadow-[2px_0_10px_rgba(0,0,0,0.02)] z-10">
+        <h1 className="text-2xl font-semibold mb-2 text-[#5C6B73] flex items-center gap-3">
+          <Activity size={26} strokeWidth={1.5} /> NALE Portal
         </h1>
-        <div className={`text-xs mb-6 px-2 py-1 rounded w-fit ${wsStatus === 'Live' ? 'bg-emerald-100 text-emerald-700' : 'bg-red-100 text-red-700'}`}>
+        <div className={`text-xs mb-8 px-2 py-1 rounded w-fit ${wsStatus === 'Live' ? 'bg-[#EDF5F1] text-[#69A27F]' : 'bg-[#FCF0EC] text-[#D97757]'}`}>
           WS: {wsStatus}
         </div>
-        <h2 className="text-sm font-semibold text-slate-500 mb-4 uppercase tracking-wider">My Classroom</h2>
+        
+        <h2 className="text-xs font-medium text-[#8D99AE] mb-4 uppercase tracking-widest">My Classroom</h2>
         
         {students.length === 0 ? (
           <p className="text-sm text-slate-400 p-2">Waiting for student telemetry...</p>
         ) : (
-          <div className="space-y-2">
+          <div className="space-y-3">
             {students.map((student) => (
               <button
                 key={student.id}
                 onClick={() => setSelectedStudent(student)}
-                className={`w-full text-left p-3 rounded-lg flex items-center justify-between transition-colors ${
-                  selectedStudent?.id === student.id ? 'bg-indigo-50 border border-indigo-200' : 'hover:bg-slate-50 border border-transparent'
-                } ${student.status === 'High Friction' ? 'border-amber-300 bg-amber-50' : ''}`}
+                className={`w-full text-left px-4 py-3 rounded-xl flex items-center justify-between transition-all duration-300 ease-in-out ${
+                  selectedStudent?.id === student.id 
+                    ? 'bg-white shadow-sm border border-[#E8E4DB] text-[#4A4A4A]' 
+                    : 'hover:bg-white/50 text-[#6B7280] border border-transparent'
+                }`}
               >
-                <span className="font-medium">{student.name}</span>
-                {student.status === 'High Friction' && <AlertTriangle size={16} className="text-amber-500 animate-pulse" />}
+                <span className="font-medium text-[15px]">{student.name}</span>
+                {student.status === 'High Friction' && <AlertTriangle size={16} strokeWidth={2} className="text-[#D97757]" />}
               </button>
             ))}
           </div>
         )}
       </div>
 
-      
-      <div className="flex-1 p-8 overflow-y-auto">
+      {/* Main Content Area */}
+      <div className="flex-1 p-10 overflow-y-auto">
         {!selectedStudent ? (
-          <div className="h-full flex items-center justify-center text-slate-400">
+          <div className="h-full flex items-center justify-center text-[#8D99AE]">
             Select a student from the sidebar to view their live profile.
           </div>
         ) : (
           <>
-            <header className="mb-8 flex justify-between items-end">
+            <header className="mb-10 flex justify-between items-end max-w-5xl mx-auto">
               <div>
-                <h2 className="text-3xl font-bold text-slate-800">{selectedStudent.name}'s Profile</h2>
-                <p className="text-slate-500 mt-1">Real-time cognitive load & ambient telemetry</p>
+                <h2 className="text-4xl font-semibold text-[#3D405B] tracking-tight">{selectedStudent.name}</h2>
+                <p className="text-[#8D99AE] mt-2 text-lg font-light">Real-time cognitive load & ambient telemetry</p>
               </div>
               <div className="flex gap-4">
-                <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center gap-3">
-                  <div className={`p-2 rounded-full ${selectedStudent.status === 'High Friction' ? 'bg-amber-100 text-amber-600' : 'bg-emerald-100 text-emerald-600'}`}>
-                    {selectedStudent.status === 'High Friction' ? <AlertTriangle size={24} /> : <CheckCircle size={24} />}
+                {/* Status Card */}
+                <div className="bg-white px-5 py-4 rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.03)] border border-[#F0EFEB] flex items-center gap-4">
+                  <div className={`p-3 rounded-full ${selectedStudent.status === 'High Friction' ? 'bg-[#FCF0EC] text-[#D97757]' : 'bg-[#EDF5F1] text-[#69A27F]'}`}>
+                    {selectedStudent.status === 'High Friction' ? <AlertTriangle size={24} strokeWidth={1.5} /> : <CheckCircle size={24} strokeWidth={1.5} />}
                   </div>
                   <div>
-                    <p className="text-xs text-slate-500 uppercase font-semibold">Current State</p>
-                    <p className="font-bold text-lg">{selectedStudent.status}</p>
+                    <p className="text-[11px] text-[#8D99AE] uppercase font-bold tracking-wider">Current State</p>
+                    <p className={`font-medium text-lg ${selectedStudent.status === 'High Friction' ? 'text-[#C45E3D]' : 'text-[#4F8663]'}`}>{selectedStudent.status}</p>
                   </div>
                 </div>
                 
-                <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center gap-3">
-                  <div className="p-2 rounded-full bg-indigo-100 text-indigo-600">
-                    <Clock size={24} />
+                {/* Intervention Card */}
+                <div className="bg-white px-5 py-4 rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.03)] border border-[#F0EFEB] flex items-center gap-4">
+                  <div className="p-3 rounded-full bg-[#F0F4F8] text-[#5C6B73]">
+                    <Clock size={24} strokeWidth={1.5} />
                   </div>
                   <div>
-                    <p className="text-xs text-slate-500 uppercase font-semibold">Last Intervention</p>
-                    <p className="font-bold text-lg">{selectedStudent.lastIntervention}</p>
+                    <p className="text-[11px] text-[#8D99AE] uppercase font-bold tracking-wider">Last Intervention</p>
+                    <p className="font-medium text-lg text-[#3D405B]">{selectedStudent.lastIntervention}</p>
                   </div>
                 </div>
               </div>
             </header>
 
-            
-            <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm mb-8">
-              <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
-                <Activity size={20} className="text-indigo-500"/> Cognitive Friction Timeline
+            {/* Chart Section */}
+            <div className="bg-white p-8 rounded-3xl shadow-[0_8px_30px_rgba(0,0,0,0.03)] border border-[#F0EFEB] mb-8 max-w-5xl mx-auto">
+              <h3 className="text-xl font-medium mb-6 text-[#5C6B73] flex items-center gap-2">
+                <Activity size={22} strokeWidth={1.5} /> Cognitive Friction Timeline
               </h3>
               <div className="h-80">
                 <ResponsiveContainer width="100%" height="100%">
                   <LineChart data={historyData}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
-                    <XAxis dataKey="time" stroke="#64748b" />
-                    <YAxis stroke="#64748b" domain={[0, 1.2]} />
+                    <CartesianGrid strokeDasharray="4 4" stroke="#F0EFEB" vertical={false} />
+                    <XAxis dataKey="time" stroke="#8D99AE" axisLine={false} tickLine={false} tickMargin={10} />
+                    <YAxis stroke="#8D99AE" axisLine={false} tickLine={false} tickMargin={10} domain={[0, 1.2]} />
                     <Tooltip 
-                      contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
+                      contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1)', padding: '12px 16px', backgroundColor: 'rgba(255,255,255,0.95)' }}
                     />
-                    <Legend />
+                    <Legend iconType="circle" wrapperStyle={{ paddingTop: '20px' }} />
                     <Line 
                       type="monotone" 
                       name="Friction Score"
                       dataKey="frictionScore" 
-                      stroke="#4f46e5" 
-                      strokeWidth={3}
-                      activeDot={{ r: 8 }} 
+                      stroke="#8390FA" 
+                      strokeWidth={4}
+                      dot={{ r: 4, strokeWidth: 2 }}
+                      activeDot={{ r: 8, stroke: '#fff', strokeWidth: 2 }} 
                       isAnimationActive={false}
                     />
                   </LineChart>
                 </ResponsiveContainer>
               </div>
             </div>
-            
-            
-            <div className={`p-6 rounded-xl border ${selectedStudent.status === 'High Friction' ? 'bg-amber-50 border-amber-200' : 'bg-indigo-50 border-indigo-100'}`}>
-              <h3 className={`text-lg font-bold mb-2 ${selectedStudent.status === 'High Friction' ? 'text-amber-900' : 'text-indigo-900'}`}>
-                Automated Pedagogical Insight
-              </h3>
-              <p className={selectedStudent.status === 'High Friction' ? 'text-amber-800' : 'text-indigo-800'}>
-                {selectedStudent.status === 'High Friction' 
-                  ? `System detected high cognitive load (Score: ${selectedStudent.currentFriction?.toFixed(2)}). Applied intervention: ${selectedStudent.lastIntervention}. Monitoring for improvement.`
-                  : `Student is maintaining a baseline cognitive load. No active interventions required.`}
-              </p>
+
+            {/* Actionable Insights */}
+            <div className="bg-[#F8F9FA] p-8 rounded-3xl border border-[#E9ECEF] max-w-5xl mx-auto flex gap-6 items-start">
+              <div className="bg-white p-3 rounded-2xl shadow-sm border border-[#E9ECEF]">
+                <Users size={28} className="text-[#8D99AE]" strokeWidth={1.5} />
+              </div>
+              <div>
+                <h3 className="text-lg font-medium text-[#3D405B] mb-2">Automated Pedagogical Insight</h3>
+                <p className="text-[#5C6B73] text-[15px] leading-relaxed">
+                  {selectedStudent.status === 'High Friction' 
+                    ? `System detected high cognitive load (Score: ${selectedStudent.currentFriction?.toFixed(2)}). Applied intervention: ${selectedStudent.lastIntervention}. Recommendation: Monitor fatigue levels.`
+                    : `Student is maintaining a stable cognitive load baseline. No interventions are required currently. Reading flow is optimal.`}
+                </p>
+              </div>
             </div>
           </>
         )}
@@ -208,5 +217,3 @@ export default function Dashboard() {
     </div>
   );
 }
-
-
