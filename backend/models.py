@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Float, ForeignKey, DateTime
+from sqlalchemy import Column, Integer, BigInteger, String, Float, ForeignKey, DateTime
 from sqlalchemy.orm import relationship
 from database import Base
 import datetime
@@ -38,7 +38,7 @@ class TelemetryEvent(Base):
     gaze_score = Column(Float)
     scroll_erratic = Column(Float)
     keystrokes = Column(Integer)
-    timestamp = Column(Integer)
+    timestamp = Column(BigInteger)
 
 class InterventionLog(Base):
     __tablename__ = "intervention_logs"
@@ -48,5 +48,5 @@ class InterventionLog(Base):
     trigger_score = Column(Float)
     outcome_score = Column(Float, nullable=True)
     duration_ms = Column(Integer, nullable=True)
-    timestamp = Column(Integer)
+    timestamp = Column(BigInteger)
 
