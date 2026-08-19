@@ -116,7 +116,7 @@ export default function Dashboard() {
         {students.length === 0 ? (
           <p className="text-sm text-slate-400 p-2">Waiting for student telemetry...</p>
         ) : (
-          <div className="space-y-3">
+          <div className="space-y-3 overflow-y-auto flex-1 pr-2 pb-6 custom-scrollbar">
             {students.map((student) => (
               <button
                 key={student.id}

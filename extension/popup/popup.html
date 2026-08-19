@@ -48,13 +48,15 @@
     <input type="text" id="studentId" placeholder="Student ID">
     <input type="password" id="pin" placeholder="4-Digit PIN">
     
-    <label style="font-size: 0.8rem; display:block; margin-bottom:4px;">Disorder Profile (First Login):</label>
-    <select id="disorderProfile">
-      <option value="none">None / Not Sure</option>
-      <option value="dyslexia">Dyslexia</option>
-      <option value="adhd">ADHD</option>
-      <option value="anxiety">Anxiety</option>
-    </select>
+    <div class="hidden">
+      <label style="font-size: 0.8rem; display:block; margin-bottom:4px;">Disorder Profile (First Login):</label>
+      <select id="disorderProfile">
+        <option value="none">None / Not Sure</option>
+        <option value="dyslexia">Dyslexia</option>
+        <option value="adhd">ADHD</option>
+        <option value="anxiety">Anxiety</option>
+      </select>
+    </div>
     
     <button id="loginBtn">Login</button>
   </div>
