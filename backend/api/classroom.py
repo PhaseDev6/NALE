@@ -1,7 +1,10 @@
-from fastapi import APIRouter, WebSocket, WebSocketDisconnect
+from fastapi import APIRouter, WebSocket, WebSocketDisconnect, Depends
+from sqlalchemy.orm import Session
 from typing import Dict, List
+from database import get_db
+from models import Student, InterventionLog
 
-router = APIRouter(prefix="/ws/classroom", tags=["classroom"])
+router = APIRouter(tags=["classroom"])
 
 class ConnectionManager:
     def __init__(self):
@@ -34,13 +37,29 @@ class ConnectionManager:
 
 ws_manager = ConnectionManager()
 
-@router.websocket("/{classroom_id}")
+@router.get("/api/classroom/{classroom_id}/students")
+def get_classroom_students(classroom_id: str, db: Session = Depends(get_db)):
+    students = db.query(Student).filter(Student.classroom_id == classroom_id).all()
+    result = []
+    for s in students:
+        last_log = db.query(InterventionLog).filter(
+            InterventionLog.student_id == s.id
+        ).order_by(InterventionLog.timestamp.desc()).first()
+        result.append({
+            "id": s.id,
+            "name": s.name,
+            "disorder_profile": s.disorder_profile,
+            "status": "Stable",
+            "lastIntervention": last_log.intervention_type if last_log else "None",
+            "currentFriction": 0.0,
+        })
+    return result
+
+@router.websocket("/ws/classroom/{classroom_id}")
 async def websocket_endpoint(websocket: WebSocket, classroom_id: str):
     await ws_manager.connect(websocket, classroom_id)
     try:
         while True:
-
             await websocket.receive_text()
     except WebSocketDisconnect:
         ws_manager.disconnect(websocket, classroom_id)
-
