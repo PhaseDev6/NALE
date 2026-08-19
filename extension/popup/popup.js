@@ -56,6 +56,12 @@ document.addEventListener('DOMContentLoaded', async () => {
       chrome.runtime.sendMessage({ type: "AUTH_SUCCESS" });
       showMainScreen(data.student.name);
       
+      navigator.permissions.query({ name: 'camera' }).then(perm => {
+        if (perm.state !== 'granted') {
+          chrome.tabs.create({ url: chrome.runtime.getURL("permissions.html") });
+        }
+      });
+      
     } catch (err) {
       showError(err.message);
     } finally {
@@ -77,6 +83,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     loginScreen.classList.add('hidden');
     mainScreen.classList.remove('hidden');
     studentNameDisplay.innerText = `Logged in as ${name}`;
+    
+    navigator.permissions.query({ name: 'camera' }).then(perm => {
+      if (perm.state !== 'granted') {
+        chrome.tabs.create({ url: chrome.runtime.getURL("permissions.html") });
+      }
+    });
   }
 
   function showError(msg) {
