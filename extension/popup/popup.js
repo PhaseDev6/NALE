@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   function showMainScreen(name) {
     loginScreen.classList.add('hidden');
     mainScreen.classList.remove('hidden');
-    studentNameDisplay.innerText = `👋 ${name}`;
+    studentNameDisplay.innerText = `Logged in as ${name}`;
   }
 
   function showError(msg) {
