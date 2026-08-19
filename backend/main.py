@@ -9,10 +9,6 @@ from api.admin import router as admin_router
 from models import School
 import uvicorn
 
-Base.metadata.drop_all(bind=engine, tables=[
-    Base.metadata.tables.get("telemetry_events"),
-    Base.metadata.tables.get("intervention_logs"),
-])
 Base.metadata.create_all(bind=engine)
 
 db = SessionLocal()

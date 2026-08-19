@@ -105,7 +105,7 @@ export default function Dashboard() {
       {/* Sidebar Roster */}
       <div className="w-72 bg-[#F3F1EC] border-r border-[#E8E4DB] p-6 flex flex-col shadow-[2px_0_10px_rgba(0,0,0,0.02)] z-10">
         <h1 className="text-2xl font-semibold mb-2 text-[#5C6B73] flex items-center gap-3">
-          <img src="/logo.png" alt="NeuroLens" className="w-7 h-7 object-contain" /> NeuroLens
+          <img src="/logo.png" alt="NeuroLens" className="w-32 h-16 object-contain" />
         </h1>
         <div className={`text-xs mb-8 px-2 py-1 rounded w-fit ${wsStatus === 'Live' ? 'bg-[#EDF5F1] text-[#69A27F]' : 'bg-[#FCF0EC] text-[#D97757]'}`}>
           WS: {wsStatus}
