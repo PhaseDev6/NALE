@@ -38,7 +38,7 @@ def friction_for(disorder, day_of_month, hour, noise):
     score = base + time_factor + exam_factor + noise
     return round(max(0.0, min(1.0, score)), 4)
 
-@router.post("/seed")
+@router.get("/seed")
 def seed_mock_data(db: Session = Depends(get_db)):
     school = db.query(School).filter(School.school_code == "BPS-1234").first()
     if not school:
