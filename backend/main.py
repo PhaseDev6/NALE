@@ -5,6 +5,7 @@ from auth.router import router as auth_router
 from api.telemetry import router as telemetry_router
 from api.classroom import router as classroom_router
 from api.students import router as students_router
+from api.admin import router as admin_router
 from models import School
 import uvicorn
 
@@ -31,6 +32,7 @@ app.include_router(auth_router)
 app.include_router(telemetry_router)
 app.include_router(classroom_router)
 app.include_router(students_router)
+app.include_router(admin_router)
 
 @app.get("/")
 def read_root():
